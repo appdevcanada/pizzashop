@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com;
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com/;
+        font-src 'self' data: https://fonts.gstatic.com https://fonts.googleapis.com https://cdnjs.cloudflare.com;
+        script-src 'self' 'unsafe-eval';
+        img-src 'self' data: content: ;">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="msapplication-tap-highlight" content="no">
+  <meta name="viewport"
+    content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="css/main.css">
+  <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
+  <link rel="icon" href="img/favicon.png" type="image/x-icon">
+  <title>Four à Pizza - Pizzéria</title>
+</head>
+
+<body>
+  <div class="header" id="header">
+    <img class="logo" id="logo" src="img/logo.png" />
+    <nav id="menu" class="menu">
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">News</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#" class="active">About</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="pages hide" id="0-home">
+    <ul class="rv-list">
+    </ul>
+  </div>
+  <div class="pages hide" id="1-detail">
+    <div class="detail" id="rv-detail">
+      <img class="det-img" id="detail-img" src="" />
+      <div class="group-det">
+        <input id="det-ttl" type="text" tabindex="1" required>
+        <span class="highlight"></span>
+        <span class="bar"></span>
+        <label>Title</label>
+      </div>
+      <div class="det-rating">
+        <span id="0" class="fa fa-star"></span>
+        <span id="1" class="fa fa-star"></span>
+        <span id="2" class="fa fa-star"></span>
+        <span id="3" class="fa fa-star"></span>
+        <span id="4" class="fa fa-star"></span>
+      </div>
+      <button id="del-btn" data_id="" tabindex="3">Delete</button>
+      <button id="upd-btn" data_id="" tabindex="4">Update</button>
+    </div>
+  </div>
+  <div class="pages hide" id="2-review">
+    <div class="add-rv" id="add-rv-detail">
+      <img id="rv-img" src="" />
+      <div class="group-add">
+        <input id="add-ttl" type="text" tabindex="1" required>
+        <span class="highlight"></span>
+        <span class="bar"></span>
+        <label>Title</label>
+      </div>
+      <div class="det-add-rating">
+        <span id="0" class="fa fa-star"></span>
+        <span id="1" class="fa fa-star"></span>
+        <span id="2" class="fa fa-star"></span>
+        <span id="3" class="fa fa-star"></span>
+        <span id="4" class="fa fa-star"></span>
+      </div>
+      <button id="cancel-btn" tabindex="3">Cancel</button>
+      <button id="save-btn" tabindex="4">Save</button>
+    </div>
+  </div>
+  <div class="footer">
+    <h4>&copy; Copyright 2019 Four à Pizza - All rights reserved</h4>
+  </div>
+  <script type="text/javascript" src="js/main.js"></script>
+</body>
+
+</html>
