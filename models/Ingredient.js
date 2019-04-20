@@ -2,21 +2,21 @@ const mongoose = require('mongoose')
 
 
 const schema = mongoose.Schema({
-    
-    name: String,
-    price: Number,
-    quantity: Number,
-    isGlutenFree: Boolean,
+
+    name: String,
+    price: Number,
+    quantity: Number,
+    isGlutenFree: Boolean,
     imageUrl: String,
-    catagories: [ENUM ['meat', 'spicy', 'vegitarian', 'vegan', 'halal', 'kosher', 'cheeze', 'seasonings']]
-    
-
-  })
+    categories: [ENUM['meat', 'spicy', 'vegetarian', 'vegan', 'halal', 'kosher', 'cheeze', 'seasonings']]
 
 
-const Model = mongoose.model('ingredient', schema)
+})
+
+
+const Model = mongoose.model('Ingredient', schema)
 
 
 
-module.exports = Mode
+module.exports = Model
 
