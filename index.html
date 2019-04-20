@@ -20,64 +20,53 @@
 </head>
 
 <body>
+  <!-- Header/Menu window -->
+  <div class="overlay-menu hide">&nbsp;</div>
   <div class="header" id="header">
     <img class="logo" id="logo" src="img/logo.png" />
     <nav id="menu" class="menu">
       <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">News</a></li>
-        <li><a href="#">Contact</a></li>
-        <li><a href="#" class="active">About</a></li>
+        <li><a href="#" class="">Home</a></li>
+        <li><a href="#" class="">Admin</a></li>
+        <li><a href="#" class="">Contact</a></li>
+        <li><a href="#" class="">About</a></li>
       </ul>
     </nav>
   </div>
-  <div class="pages hide" id="0-home">
-    <ul class="rv-list">
-    </ul>
+
+  <!-- Main pages -->
+  <div class="pages hide" id="signin">
   </div>
-  <div class="pages hide" id="1-detail">
-    <div class="detail" id="rv-detail">
-      <img class="det-img" id="detail-img" src="" />
-      <div class="group-det">
-        <input id="det-ttl" type="text" tabindex="1" required>
-        <span class="highlight"></span>
-        <span class="bar"></span>
-        <label>Title</label>
-      </div>
-      <div class="det-rating">
-        <span id="0" class="fa fa-star"></span>
-        <span id="1" class="fa fa-star"></span>
-        <span id="2" class="fa fa-star"></span>
-        <span id="3" class="fa fa-star"></span>
-        <span id="4" class="fa fa-star"></span>
-      </div>
-      <button id="del-btn" data_id="" tabindex="3">Delete</button>
-      <button id="upd-btn" data_id="" tabindex="4">Update</button>
+  <div class="pages hide" id="signup">
+  </div>
+  <div class="pages hide" id="chgpwd">
+  </div>
+  <div class="pages hide" id="adm-lstpizza">
+  </div>
+  <div class="pages hide" id="adm-addpizza">
+  </div>
+  <div class="pages hide" id="adm-lstingr">
+  </div>
+  <div class="pages hide" id="adm-addingr">
+  </div>
+
+  <!-- Info/Success/Warning window -->
+  <div class="overlay hide">&nbsp;</div>
+  <div class="modal off">
+    <div class="" id="infotype">
+      <h2 id="idtype"></h2>
     </div>
-  </div>
-  <div class="pages hide" id="2-review">
-    <div class="add-rv" id="add-rv-detail">
-      <img id="rv-img" src="" />
-      <div class="group-add">
-        <input id="add-ttl" type="text" tabindex="1" required>
-        <span class="highlight"></span>
-        <span class="bar"></span>
-        <label>Title</label>
-      </div>
-      <div class="det-add-rating">
-        <span id="0" class="fa fa-star"></span>
-        <span id="1" class="fa fa-star"></span>
-        <span id="2" class="fa fa-star"></span>
-        <span id="3" class="fa fa-star"></span>
-        <span id="4" class="fa fa-star"></span>
-      </div>
-      <button id="cancel-btn" tabindex="3">Cancel</button>
-      <button id="save-btn" tabindex="4">Save</button>
+    <div class="modal-msg">
+      <h4 id="msgctt"></h4>
     </div>
+    <button class="closebtn" id="closebtn">Close</button>
   </div>
+
+  <!-- Footer window -->
   <div class="footer">
     <h4>&copy; Copyright 2019 Four à Pizza - All rights reserved</h4>
   </div>
+
   <script type="text/javascript" src="js/main.js"></script>
 </body>
 

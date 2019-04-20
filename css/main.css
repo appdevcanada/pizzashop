@@ -1,3 +1,5 @@
+/* Free images got from URL: https://unsplash.com *********/
+
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 
 * {
@@ -90,6 +92,7 @@ li a {
   padding: 14px 16px;
   text-decoration: none;
   border-bottom: 3px solid transparent;
+  transition: all 0.5s ease-in-out;
 }
 
 li a:hover {
@@ -118,6 +121,115 @@ h4 {
   text-align: center;
   margin: 12px;
 }
+
+/* OVERLAY/MODAL WINDOW *********************/
+.overlay-menu{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  z-index: 150;
+  background: rgba(0,0,0,0.7);
+}
+
+.overlay{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 60;
+  background: rgba(0,0,0,0.7);
+}
+
+.modal {
+  position: fixed;
+  width: 500px;
+  height: 280px;
+  z-index: 70;
+  top: calc((100% - 280px)/2);
+  left: calc((100% - 500px)/2);
+  background-color: rgb(238, 238, 238);
+  text-align: center;
+  border-radius: 5px;
+  transition: all 0.8s ease-in-out;
+}
+
+
+/* Classes to show or hide the overlay and modal window */
+.show{
+  display: block;
+}
+
+.hide {
+  display: none;
+}
+
+.off{
+  transition: all 0.8s ease-out;
+  transform: translateY(-300%);
+}
+
+.offout{
+  transition: all 0s ease-out;
+  transform: translateY(-300%);
+}
+
+.on{
+  transition: all 0.8s ease-in;
+  transform: translateY(0);
+}
+
+
+#idtype {
+  margin: 1.5vh;
+}
+
+.closebtn {
+  width: 120px;
+  border: none;
+  background-color: rgb(43, 120, 254);
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  padding: 0.8rem 2rem;
+  outline: none;
+  font-size: 1rem;
+  margin: 10px;
+  border-radius: 5px;
+}
+
+.modal-header-info,
+.modal-header-succ,
+.modal-header-error {
+  padding: 2px 16px;
+  color: rgb(255, 255, 255);
+  text-align: center;
+  height: 5vh;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.modal-header-info {
+  background-color:rgb(45, 94, 255);
+}
+
+.modal-header-succ {
+  background-color:rgb(32, 181, 37);
+}
+
+.modal-header-error {
+  background-color:rgb(252, 0, 0);
+}
+
+.modal-msg {
+  padding: 2px 8px;
+  background-color:rgb(238, 238, 238);
+  color: rgb(0, 0, 0);
+  text-align: center;
+  height: 20vh;
+}
+
 
 /* MEDIA QUERIES *********************/
 @media screen and (max-width: 900px) {
