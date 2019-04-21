@@ -2,14 +2,16 @@ const router = require('express').Router()
 const Course = require('../models/Course')
 const sanitizeBody = require('../middleware/sanitizeBody')
 const Authorized = require('./auth/index')
-var isAdmin = false
+const Cors = require('cors')
+const dbConfig = config.get('db')
+var isStaff = false
 var actualUser = ''
 
-router.get('/', async (req, res) => {
+router.get('/', Cors(dbConfig.cors), async (req, res) => {
   try {
-    const admin = await Authorized.retData()
-    isAdmin = admin.isAdmin
-    actualUser = admin.nowUser
+    const staff = await Authorized.retData()
+    isStaff = staff.isStaff
+    actualUser = staff.nowUser
   } catch (err) {
     console.log(err)
   }
@@ -29,11 +31,11 @@ router.get('/', async (req, res) => {
   }
 })
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', Cors(dbConfig.cors), async (req, res) => {
   try {
-    const admin = await Authorized.retData()
-    isAdmin = admin.isAdmin
-    actualUser = admin.nowUser
+    const staff = await Authorized.retData()
+    isStaff = staff.isStaff
+    actualUser = staff.nowUser
   } catch (err) {
     console.log(err)
   }
@@ -60,13 +62,13 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', sanitizeBody, async (req, res) => {
   try {
-    const admin = await Authorized.retData()
-    isAdmin = admin.isAdmin
-    actualUser = admin.nowUser
+    const staff = await Authorized.retData()
+    isStaff = staff.isStaff
+    actualUser = staff.nowUser
   } catch (err) {
     console.log(err)
   }
-  if (isAdmin) {
+  if (isStaff) {
     let newCourse = new Course(req.sanitizedBody)
     try {
       await newCourse.save()
@@ -96,14 +98,14 @@ router.post('/', sanitizeBody, async (req, res) => {
   }
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', Cors(dbConfig.cors), async (req, res) => {
   try {
-    const admin = await Authorized.retData()
-    isAdmin = admin.isAdmin
+    const staff = await Authorized.retData()
+    isStaff = staff.isStaff
   } catch (err) {
     console.log(err)
   }
-  if (isAdmin) {
+  if (isStaff) {
     try {
       const course = await Course.findByIdAndRemove(req.params.id)
       if (!course) throw new Error('Resource not found')
@@ -139,12 +141,12 @@ function sendResourceNotFound(req, res) {
 
 const update = (overwrite = false) => async (req, res) => {
   try {
-    const admin = await Authorized.retData()
-    isAdmin = admin.isAdmin
+    const staff = await Authorized.retData()
+    isStaff = staff.isStaff
   } catch (err) {
     console.log(err)
   }
-  if (isAdmin) {
+  if (isStaff) {
     try {
       const course = await Course.findByIdAndUpdate(
         req.params.id,

@@ -23,7 +23,12 @@ let msgInfo = "";
 document.addEventListener("DOMContentLoaded", init);
 
 function init() {
-  document.querySelector("#logo").addEventListener("click", () => { showOverlay(TYPE_INFO, "just a test"); });
+  // document.querySelector("#logo").addEventListener("click", () => { showOverlay(TYPE_INFO, "just a test"); });
+  document.querySelector("#logo").addEventListener("click", () => {
+    let pages = document.querySelectorAll(".pages");
+    pages[1].classList.toggle("hide");
+
+  });
   document.querySelector("#closebtn").addEventListener("click", hideOverlay);
   document.querySelector(".modal").addEventListener("transitionend", closeDrawer);
 }

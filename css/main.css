@@ -25,7 +25,7 @@ body {
 }
 .pages {
   display: block;
-  margin-top: 70px;
+  margin-top: 110px;
   z-index: 50;
 }
 
@@ -96,6 +96,7 @@ li a {
 }
 
 li a:hover {
+  text-decoration: none;
   color: rgb(255, 255, 255);
   background-color: rgb(17, 17, 17);
   border-bottom: 3px solid rgb(230, 183, 55);
@@ -117,9 +118,13 @@ li a:hover {
   box-shadow: 0 -4px 8px rgba(0,0,0,.14),0 -4px 8px rgba(0,0,0,.28);
 }
 
-h4 {
+.footer > h4 {
   text-align: center;
   margin: 12px;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1.2;
+  color: rgb(0, 0, 0);
 }
 
 /* OVERLAY/MODAL WINDOW *********************/
@@ -181,6 +186,9 @@ h4 {
   transform: translateY(0);
 }
 
+#img_contact {
+  height: 20vh;
+}
 
 #idtype {
   margin: 1.5vh;

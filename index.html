@@ -3,20 +3,22 @@
 
 <head>
   <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com;
-        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com/;
-        font-src 'self' data: https://fonts.gstatic.com https://fonts.googleapis.com https://cdnjs.cloudflare.com;
-        script-src 'self' 'unsafe-eval';
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com/ https://stackpath.bootstrapcdn.com/;
+        font-src 'self' data: https://fonts.gstatic.com https://fonts.googleapis.com https://cdnjs.cloudflare.com https://stackpath.bootstrapcdn.com/;
+        script-src 'self' 'unsafe-inline' https://stackpath.bootstrapcdn.com/;
         img-src 'self' data: content: ;">
   <meta name="format-detection" content="telephone=no">
   <meta name="msapplication-tap-highlight" content="no">
   <meta name="viewport"
     content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
   <link rel="stylesheet" type="text/css"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" type="text/css" href="css/main.css">
   <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon">
   <link rel="icon" href="img/favicon.png" type="image/x-icon">
-  <title>Four à Pizza - Pizzéria</title>
+  <title>Four &agrave; Pizza - Pizz&eacute;ria</title>
 </head>
 
 <body>
@@ -38,6 +40,81 @@
   <div class="pages hide" id="signin">
   </div>
   <div class="pages hide" id="signup">
+    <div class="card-deck">
+      <div class="card mb-3">
+        <div class="text-center">
+          <img class="card-img-top p-1 rounded-top" id="img_contact" src="img/mainimg.jpeg" alt="Contact Me!">
+        </div>
+        <p class="h3 text-center">Sign Up</p>
+        <div class="card-body">
+          <form class="needs-validation" novalidate id="form_val">
+            <div class="form-row">
+              <div class="col-md-6 mb-4">
+                <label for="validationCustom01">First Name</label>
+                <input type="text" class="form-control" id="first_name" placeholder="Type your First name" required>
+                <div class="invalid-feedback">
+                  Please provide your First name.
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-6 mb-4">
+                <label for="validationCustom02">Last Name</label>
+                <input type="text" class="form-control" id="last_name" placeholder="Type your Last name" required>
+                <div class="invalid-feedback">
+                  Please provide your Last name.
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-6 mb-4">
+                <label for="validationCustomEmail">e-Mail</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="email">@</span>
+                  </div>
+                  <input type="text" class="form-control" id="validemail" placeholder="Type your e-Mail"
+                    aria-describedby="inputGroupPrepend" required>
+                  <div class="invalid-feedback">
+                    Please fill your e-Mail.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-6 mb-4">
+                <label for="inputPassword">Password</label>
+                <div class="input-group">
+                  <input type="password" class="form-control" id="inputPassword" placeholder="Type your password"
+                    required>
+                  <div class="invalid-feedback">
+                    Please fill your password.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-6 mb-4">
+                <label for="userType">User Type</label>
+                <div class="input-group">
+                  <select id="userType" class="form-control">
+                    <option selected>Customer</option>
+                    <option>Staff</option>
+                  </select>
+                  <div class="invalid-feedback">
+                    Please select your user type.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p></p>
+            <button class="btn btn-primary" id="submitSUP" type="submit">Submit</button>
+            <p></p>
+            <p>&nbsp;</p>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="pages hide" id="chgpwd">
   </div>
@@ -64,10 +141,34 @@
 
   <!-- Footer window -->
   <div class="footer">
-    <h4>&copy; Copyright 2019 Four à Pizza - All rights reserved</h4>
+    <h4>&copy; Copyright 2019 Four &agrave; Pizza - All rights reserved</h4>
   </div>
 
   <script type="text/javascript" src="js/main.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+    integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+    crossorigin="anonymous"></script>
+
+  <script>
+    // Function to pre-validate the form before submission
+    (function () {
+      'use strict';
+      window.addEventListener('load', function () {
+        let forms = document.getElementsByClassName('needs-validation');
+        let validation = Array.prototype.filter.call(forms, function (form) {
+          form.addEventListener('submit', function (event) {
+            if (form.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+      }, false);
+    })();
+
+  </script>
+
 </body>
 
 </html>
