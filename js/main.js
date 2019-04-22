@@ -19,15 +19,18 @@ const TYPE_INFO = 0;
 const TYPE_SUCC = 1;
 const TYPE_ERR = 2;
 let msgInfo = "";
+let pages = [];
 
 document.addEventListener("DOMContentLoaded", init);
 
 function init() {
+  pages = document.querySelectorAll(".pages");
   // document.querySelector("#logo").addEventListener("click", () => { showOverlay(TYPE_INFO, "just a test"); });
-  document.querySelector("#logo").addEventListener("click", () => {
-    let pages = document.querySelectorAll(".pages");
-    pages[1].classList.toggle("hide");
-
+  document.querySelector("#signinlnk").addEventListener("click", () => {
+    changePage(0);
+  });
+  document.querySelector("#signuplnk").addEventListener("click", () => {
+    changePage(1);
   });
   document.querySelector("#closebtn").addEventListener("click", hideOverlay);
   document.querySelector(".modal").addEventListener("transitionend", closeDrawer);
@@ -90,5 +93,14 @@ function hideModal(e) {
   } else {
     modal.classList.remove("offout");
     modal.classList.add("off");
+  }
+}
+
+function changePage(page) {
+  for (let i = 0; i < pages.length; i++) {
+    pages[i].className = "pages hide";
+    if (i == page) {
+      pages[i].classList.remove("hide");
+    }
   }
 }
