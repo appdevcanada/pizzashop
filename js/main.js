@@ -25,12 +25,17 @@ document.addEventListener("DOMContentLoaded", init);
 
 function init() {
   pages = document.querySelectorAll(".pages");
+  // history.pushState(null, null, document.location);
   // document.querySelector("#logo").addEventListener("click", () => { showOverlay(TYPE_INFO, "just a test"); });
-  document.querySelector("#signinlnk").addEventListener("click", () => {
-    changePage(0);
+  document.querySelector("#signinlnk").addEventListener("click", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    changePage(e, 0);
   });
-  document.querySelector("#signuplnk").addEventListener("click", () => {
-    changePage(1);
+  document.querySelector("#signuplnk").addEventListener("click", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    changePage(e, 1);
   });
   document.querySelector("#closebtn").addEventListener("click", hideOverlay);
   document.querySelector(".modal").addEventListener("transitionend", closeDrawer);
@@ -96,7 +101,11 @@ function hideModal(e) {
   }
 }
 
-function changePage(page) {
+function changePage(e, page) {
+  let data = e.target.getAttribute('data-name');
+  console.log(data);
+  let url = data + ".html";
+  // history.replaceState(data, null, url);
   for (let i = 0; i < pages.length; i++) {
     pages[i].className = "pages hide";
     if (i == page) {

@@ -302,7 +302,7 @@ li a:hover {
   }
 }
 
-@media screen and (max-width: 530px) {
+@media screen and (max-width: 630px) {
   ul li a {
     float: none;
     display: inline-block;
@@ -317,7 +317,8 @@ li a:hover {
   .header > h6 {
     margin: 30px 5px 0;
   }
-  .footer > h5 {
-    font-size: 1rem;
+  .footer > h6 {
+    font-size: 0.8rem;
+    padding-top: 0 !important;
   }
 }
