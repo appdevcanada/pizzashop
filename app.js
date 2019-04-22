@@ -17,8 +17,9 @@ app.use(require('express-mongo-sanitize')())
 
 app.use('/auth', require('./routes/auth'))
 app.use('/api/users', require('./routes/auth'))
-app.use('/api/courses', require('./routes/courses'))
-app.use('/api/students', require('./routes/students'))
+
+// app.use('/courses', require('./routes/courses'))
+// app.use('/students', require('./routes/students'))
 
 const port = process.env.PORT || 3030
 app.listen(port, () => debug(`Express is listening on port ${port}...`))

@@ -5,7 +5,7 @@ const authorize = require('../../middleware/auth')
 const User = require('../../models/User')
 const Auth = require('../../models/authentication_attempts')
 var nowUser = ""
-var isAdmin = false
+var isStaff = false
 var ipAddress = ""
 
 // Register a new user
@@ -44,7 +44,7 @@ router.post('/users', sanitizeBody, async (req, res) => {
 router.get('/users/me', authorize, async (req, res) => {
   const user = await User.findById(req.user._id)
   nowUser = user._id
-  isAdmin = user.isAdmin
+  isStaff = user.isStaff
   ipAddress = req.ip
   saveAttempt()
   res.send({ data: user })
@@ -97,7 +97,7 @@ const update = (overwrite = false) => async (req, res) => {
 }
 
 async function retData() {
-  const ret = { "nowUser": nowUser, "isAdmin": isAdmin }
+  const ret = { "nowUser": nowUser, "isStaff": isStaff }
   return ret
 }
 

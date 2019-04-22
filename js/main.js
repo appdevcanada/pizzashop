@@ -18,6 +18,8 @@ const MDL = [
 const TYPE_INFO = 0;
 const TYPE_SUCC = 1;
 const TYPE_ERR = 2;
+// const BASE_URL = "https://pizzashop.ca/api";
+const BASE_URL = "file:///Users/luishmsouza/Documents/Code/MADD-9022/pizzashop";
 let msgInfo = "";
 let pages = [];
 
@@ -26,7 +28,6 @@ document.addEventListener("DOMContentLoaded", init);
 function init() {
   pages = document.querySelectorAll(".pages");
   // history.pushState(null, null, document.location);
-  // document.querySelector("#logo").addEventListener("click", () => { showOverlay(TYPE_INFO, "just a test"); });
   document.querySelector("#signinlnk").addEventListener("click", function (e) {
     e.preventDefault();
     e.stopPropagation();
@@ -39,32 +40,56 @@ function init() {
   });
   document.querySelector("#closebtn").addEventListener("click", hideOverlay);
   document.querySelector(".modal").addEventListener("transitionend", closeDrawer);
+  document.querySelector("#submitSUP").addEventListener("click", signUp);
 }
 
 function closeDrawer() {
   setTimeout(hideOverlay, 5000);
 }
 
-function showOverlay(typeMsg, msgInfo) {
-  // e.preventDefault();
+function signUp() {
+  fetch(BASE_URL + "/api/users")
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      // imageURL = data.images.secure_base_url;
+    })
+    .catch(function (error) {
+      let status = 'Internal Server Error',
+        code = 'Code: 500',
+        title = 'Problem saving document to the database.',
+        detail = "just a msg"
+      showOverlay(TYPE_ERR, status, code, title, detail);
+      // showOverlay(TYPE_ERR, error.status, error.code, error.title, error.detail);
+    })
+
+}
+
+function showOverlay(typeMsg, msgStt, msgCode, msgTitle, msgDetail) {
   let overlayMenu = document.querySelector(".overlay-menu");
   overlayMenu.classList.remove("hide");
   overlayMenu.classList.add("show");
   let overlay = document.querySelector(".overlay");
-  showModal(MDL[typeMsg], msgInfo);
+  showModal(MDL[typeMsg], msgStt, msgCode, msgTitle, msgDetail);
   overlay.classList.remove("hide");
   overlay.classList.add("show");
 }
 
-function showModal(typemsg, message) {
-  // e.preventDefault();
+function showModal(typemsg, msgstatus, msgcode, msgtitle, msgdetail) {
   let modal = document.querySelector(".modal");
   let info = document.querySelector("#infotype");
   let idtype = document.querySelector("#idtype");
   idtype.textContent = typemsg.title;
   info.classList.add(typemsg.class);
-  let msg = document.querySelector("#msgctt");
-  msg.textContent = message;
+  let msgstt = document.querySelector("#msgStt");
+  msgstt.textContent = msgstatus;
+  let msgcod = document.querySelector("#msgCod");
+  msgcod.textContent = msgcode;
+  let msgtit = document.querySelector("#msgTit");
+  msgtit.textContent = msgtitle;
+  let msgdet = document.querySelector("#msgDet");
+  msgdet.textContent = msgdetail;
   modal.classList.remove("off");
   modal.classList.remove("offout");
   modal.classList.add("on");

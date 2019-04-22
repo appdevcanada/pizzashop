@@ -167,6 +167,7 @@ li a:hover {
   width: 500px;
   height: 280px;
   z-index: 70;
+  display: block;
   top: calc((100% - 280px)/2);
   left: calc((100% - 500px)/2);
   background-color: rgb(238, 238, 238);
@@ -202,10 +203,6 @@ li a:hover {
 
 #img_contact {
   height: 20vh;
-}
-
-#idtype {
-  margin: 1.5vh;
 }
 
 .closebtn {
