@@ -2,11 +2,13 @@
 <html lang="en">
 
 <head>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com ;
-        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com/ https://stackpath.bootstrapcdn.com/ ;
-        font-src 'self' data: https://fonts.gstatic.com https://fonts.googleapis.com https://cdnjs.cloudflare.com https://stackpath.bootstrapcdn.com/ ;
-        script-src 'self' 'unsafe-inline' https://stackpath.bootstrapcdn.com/ https://code.jquery.com/ https://cdnjs.cloudflare.com/ ;
-        img-src 'self' data: content: ;">
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self' file: filesystem: data: gap: https://ssl.gstatic.com ;
+    connect-src 'self' ws: file: filesystem: http://mora0199.edumedia.ca/ http://localhost:3030/;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com/ https://stackpath.bootstrapcdn.com/ ;
+    font-src 'self' data: https://fonts.gstatic.com https://fonts.googleapis.com https://cdnjs.cloudflare.com https://stackpath.bootstrapcdn.com/ ;
+    script-src 'self' 'unsafe-inline' https://stackpath.bootstrapcdn.com/ https://code.jquery.com/ https://cdnjs.cloudflare.com/ ;
+    img-src 'self' data: content: ;">
   <meta name="format-detection" content="telephone=no">
   <meta name="msapplication-tap-highlight" content="no">
   <meta name="viewport"
@@ -35,8 +37,8 @@
       </ul>
     </nav>
     <h6 class="text-center">
-      <a href="/signin.html" id="signinlnk" data-name="signin">Sign-In</a>&nbsp;|&nbsp;<a href="/register.html"
-        id="signuplnk" data-name="register">Sign-Up</a>
+      <a href="/signin.html" id="signinlnk" data-name="signin">Sign-In</a>&nbsp;|&nbsp;
+      <a href="/register.html" id="signuplnk" data-name="register">Sign-Up</a>
     </h6>
   </div>
 
@@ -59,7 +61,7 @@
                 <input type="checkbox" value="rememberLS"> Remember me
               </label>
             </div>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Sign In</button>
+            <button class="btn btn-lg btn-primary btn-block" id="submitSIN" type="submit">Sign In</button>
           </form>
         </div>
       </div>
@@ -124,8 +126,8 @@
                   <label for="userType">User Type</label>
                   <div class="input-group">
                     <select id="userType" class="form-control">
-                      <option selected>Customer</option>
-                      <option>Staff</option>
+                      <option value="C" selected>Customer</option>
+                      <option value="S">Staff</option>
                     </select>
                     <div class="invalid-feedback">
                       Please select your user type.

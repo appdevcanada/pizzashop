@@ -3,7 +3,7 @@ const router = express.Router()
 const sanitizeBody = require('../../middleware/sanitizeBody')
 const authorize = require('../../middleware/auth')
 const User = require('../../models/User')
-const Auth = require('../../models/authentication_attempts')
+const Auth = require('../../models/Auth_attempts')
 var nowUser = ""
 var isStaff = false
 var ipAddress = ""
@@ -121,7 +121,7 @@ router.patch('/:_id', sanitizeBody, update((overwrite = false)))
 async function saveAttempt() {
   let dateNow = convertUTCDateToLocalDate(new Date())
   let newAuth = new Auth({
-    "username": nowUser, "ipAddress": ipAddress, "didSucceed": true, createdAt: dateNow
+    "username": nowUser, "ipAddress": ipAddress, createdAt: dateNow
   })
   try {
     await newAuth.save()
@@ -132,7 +132,7 @@ async function saveAttempt() {
         {
           status: 'Server error',
           code: '500',
-          title: 'Problem saving authentication document to the database.'
+          title: 'Problem saving auth_attempt document to the database.'
         }
       ]
     })

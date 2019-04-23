@@ -1,6 +1,6 @@
 'use strict'
 
-require('./startup/database')()
+require('./startup/databaseConnect')('final-mora0199-call0099')
 const debug = require('debug')('final-mora0199-call0099')
 const sanitizeMongo = require('express-mongo-sanitize')
 

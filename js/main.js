@@ -18,8 +18,9 @@ const MDL = [
 const TYPE_INFO = 0;
 const TYPE_SUCC = 1;
 const TYPE_ERR = 2;
-// const BASE_URL = "https://pizzashop.ca/api";
-const BASE_URL = "file:///Users/luishmsouza/Documents/Code/MADD-9022/pizzashop";
+const SESSION_KEY = "SK_PizzaShop";
+//const BASE_URL = "http://mora0199.edumedia.ca";
+const BASE_URL = "http://localhost:3030";
 let msgInfo = "";
 let pages = [];
 
@@ -41,29 +42,78 @@ function init() {
   document.querySelector("#closebtn").addEventListener("click", hideOverlay);
   document.querySelector(".modal").addEventListener("transitionend", closeDrawer);
   document.querySelector("#submitSUP").addEventListener("click", signUp);
+  document.querySelector("#submitSIN").addEventListener("click", signIn);
 }
 
 function closeDrawer() {
   setTimeout(hideOverlay, 5000);
 }
 
-function signUp() {
-  fetch(BASE_URL + "/api/users")
+function signIn() {
+  let url = BASE_URL + "/auth/users/me";
+  fetch(url)
     .then(function (response) {
       return response.json();
     })
-    .then(function (data) {
-      // imageURL = data.images.secure_base_url;
+    .then(function (result) {
+      let data = result.data;
+      let code = data.status,
+        status = data.firstName,
+        token = data.token,
+        title = "",
+        detail = "";
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify(token));
+      showOverlay(TYPE_SUCC, status, code, title, detail);
+      changePage(false, 0);
     })
     .catch(function (error) {
       let status = 'Internal Server Error',
         code = 'Code: 500',
         title = 'Problem saving document to the database.',
-        detail = "just a msg"
+        detail = "just a msg";
       showOverlay(TYPE_ERR, status, code, title, detail);
       // showOverlay(TYPE_ERR, error.status, error.code, error.title, error.detail);
     })
+}
 
+function signUp() {
+  let url = BASE_URL + "/auth/users";
+  let userType = document.querySelector("#userType")
+  let selUser = userType.options[userType.selectedIndex].value;
+  let staffYN = selUser === "S" ? true : false;
+  let formData = {
+    firstName: document.querySelector("#first_name").value,
+    lastName: document.querySelector("#last_name").value,
+    email: document.querySelector("#validEmail").value,
+    password: document.querySelector("#inputPasswordSU").value,
+    isStaff: staffYN
+  };
+  let jsonData = JSON.stringify(formData);
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json;charset=UTF-8');
+  let req = new Request(url, {
+    headers: headers,
+    method: 'POST',
+    mode: 'cors',
+    // credentials: 'include',
+    body: jsonData
+  });
+  fetch(req)
+    .then(response => {
+      return response.json();
+    })
+    .then(data => {
+      let code = data.status,
+        status = data.data.firstName,
+        title = "",
+        detail = "";
+      showOverlay(TYPE_SUCC, status, code, title, detail);
+      changePage(false, 0);
+    })
+    .catch(error => {
+      console.log(error);
+      showOverlay(TYPE_ERR, error.status, error.code, error.title, error.detail);
+    })
 }
 
 function showOverlay(typeMsg, msgStt, msgCode, msgTitle, msgDetail) {
@@ -127,8 +177,12 @@ function hideModal(e) {
 }
 
 function changePage(e, page) {
-  let data = e.target.getAttribute('data-name');
-  console.log(data);
+  let data = "";
+  if (e) {
+    data = e.target.getAttribute('data-name');
+  } else {
+    data = "signin";
+  }
   let url = data + ".html";
   // history.replaceState(data, null, url);
   for (let i = 0; i < pages.length; i++) {
@@ -137,4 +191,5 @@ function changePage(e, page) {
       pages[i].classList.remove("hide");
     }
   }
+
 }

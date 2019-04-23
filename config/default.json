@@ -3,7 +3,7 @@
   "db": {
     "host": "localhost",
     "port": "27017",
-    "dbName": "final-mora0199-call0099"
+    "name": "final-mora0199-call0099"
   },
   "jwt": {
     "saltRounds": 14

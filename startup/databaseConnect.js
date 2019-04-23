@@ -11,13 +11,13 @@ module.exports = () => {
   }
 
   const connectionString = `mongodb://${credentials}${dbConfig.host}:${dbConfig.port}/${dbConfig.name}?authSource=admin`
-
   mongoose
     .connect(connectionString, {
       useNewUrlParser: true
     })
     .then(() => {
       logger.log('info', `Connected to MongoDB ...`)
+      logger.log('info', connectionString)
     })
     .catch(err => {
       logger.log('error', `Error connecting to MongoDB ...`, err)
