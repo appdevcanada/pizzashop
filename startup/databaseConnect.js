@@ -17,7 +17,6 @@ module.exports = () => {
     })
     .then(() => {
       logger.log('info', `Connected to MongoDB ...`)
-      logger.log('info', connectionString)
     })
     .catch(err => {
       logger.log('error', `Error connecting to MongoDB ...`, err)

@@ -21,8 +21,9 @@ const TYPE_ERR = 2;
 const SESSION_KEY = "SK_PizzaShop";
 //const BASE_URL = "http://mora0199.edumedia.ca";
 const BASE_URL = "http://localhost:3030";
-let msgInfo = "";
 let pages = [];
+let token = "";
+let loggedUser = {};
 
 document.addEventListener("DOMContentLoaded", init);
 
@@ -33,11 +34,13 @@ function init() {
     e.preventDefault();
     e.stopPropagation();
     changePage(e, 0);
+    document.querySelector("#inputEmailSI").focus();
   });
   document.querySelector("#signuplnk").addEventListener("click", function (e) {
     e.preventDefault();
     e.stopPropagation();
     changePage(e, 1);
+    document.querySelector("#first_name").focus();
   });
   document.querySelector("#closebtn").addEventListener("click", hideOverlay);
   document.querySelector(".modal").addEventListener("transitionend", closeDrawer);
@@ -50,30 +53,71 @@ function closeDrawer() {
 }
 
 function signIn() {
-  let url = BASE_URL + "/auth/users/me";
-  fetch(url)
-    .then(function (response) {
+  let url = BASE_URL + "/auth/tokens";
+  let formData = {
+    email: document.querySelector("#inputEmailSI").value,
+    password: document.querySelector("#inputPasswordSI").value
+  };
+  let jsonData = JSON.stringify(formData);
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json;charset=UTF-8');
+  let req = new Request(url, {
+    headers: headers,
+    method: 'POST',
+    mode: 'cors',
+    body: jsonData
+  });
+  fetch(req)
+    .then(response => {
       return response.json();
     })
-    .then(function (result) {
-      let data = result.data;
-      let code = data.status,
-        status = data.firstName,
-        token = data.token,
-        title = "",
-        detail = "";
+    .then(result => {
+      token = result.data.token;
       sessionStorage.setItem(SESSION_KEY, JSON.stringify(token));
-      showOverlay(TYPE_SUCC, status, code, title, detail);
-      changePage(false, 0);
+      let url = BASE_URL + "/auth/users/me";
+      let headers = new Headers();
+      headers.append('Content-Type', 'application/json;charset=UTF-8');
+      headers.append('Authorization', 'Bearer ' + token);
+      console.log('header token: ', token);
+      console.log('header auth: ', headers);
+      let req = new Request(url, {
+        headers: headers,
+        method: 'GET',
+        mode: 'cors'
+      });
+      fetch(req)
+        .then(response => {
+          return response.json();
+        })
+        .then(result => {
+          if (!result.errors) {
+            loggedUser = result.data;
+            let code = "Welcome back!",
+              status = loggedUser.firstName,
+              title = "",
+              detail = "";
+            showOverlay(TYPE_SUCC, status, code, title, detail);
+            changePage(false, 2);
+          } else {
+            let code = "Code: " + result.errors[0].code,
+              status = result.errors[0].status,
+              title = result.errors[0].title,
+              detail = result.errors[0].detail;
+            showOverlay(TYPE_ERR, status, code, title, detail);
+          };
+        })
+        .catch(error => {
+          // let code = "Code: " + error.errors[0].code,
+          //   status = error.errors[0].status,
+          //   title = error.errors[0].title,
+          //   detail = error.errors[0].detail;
+          showOverlay(TYPE_ERR, error.status, error.code, error.title, error.detail);
+          // showOverlay(TYPE_ERR, status, code, title, detail);
+        })
     })
-    .catch(function (error) {
-      let status = 'Internal Server Error',
-        code = 'Code: 500',
-        title = 'Problem saving document to the database.',
-        detail = "just a msg";
-      showOverlay(TYPE_ERR, status, code, title, detail);
-      // showOverlay(TYPE_ERR, error.status, error.code, error.title, error.detail);
-    })
+    .catch(error => {
+      showOverlay(TYPE_ERR, error.status, error.code, error.title, error.detail);
+    });
 }
 
 function signUp() {
@@ -95,7 +139,6 @@ function signUp() {
     headers: headers,
     method: 'POST',
     mode: 'cors',
-    // credentials: 'include',
     body: jsonData
   });
   fetch(req)
@@ -103,15 +146,23 @@ function signUp() {
       return response.json();
     })
     .then(data => {
-      let code = data.status,
-        status = data.data.firstName,
-        title = "",
-        detail = "";
-      showOverlay(TYPE_SUCC, status, code, title, detail);
+      if (!data.errors) {
+        let code = data.status,
+          status = data.data.firstName,
+          title = "",
+          detail = "Thanks for registering with us!";
+        showOverlay(TYPE_SUCC, status, code, title, detail);
+      } else {
+        let code = "Code: " + data.errors[0].code,
+          status = data.errors[0].status,
+          title = data.errors[0].title,
+          detail = data.errors[0].detail;
+        showOverlay(TYPE_ERR, status, code, title, detail);
+      };
       changePage(false, 0);
+      document.querySelector("#inputEmailSI").focus();
     })
     .catch(error => {
-      console.log(error);
       showOverlay(TYPE_ERR, error.status, error.code, error.title, error.detail);
     })
 }

@@ -1,8 +1,10 @@
 const jwt = require('jsonwebtoken')
 const jwtPrivateKey = process.env.APP_JWTKEY
+const logger = require('../startup/logger')
 
 module.exports = (req, res, next) => {
-  const token = req.header('bearer')
+  const token = parseToken(req.header('Authorization'))
+  logger.log('info', "AUTH token " + token)
   if (!token) {
     return res.status(401).send({
       errors: [
@@ -30,5 +32,15 @@ module.exports = (req, res, next) => {
         }
       ]
     })
+  }
+}
+
+const parseToken = function (header) {
+  if (header) {
+    const [type, token] = header.split(' ')
+    if (type === 'Bearer' && typeof token !== 'undefined') {
+      return token
+    }
+    return undefined
   }
 }
