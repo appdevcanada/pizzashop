@@ -19,8 +19,8 @@ const TYPE_INFO = 0;
 const TYPE_SUCC = 1;
 const TYPE_ERR = 2;
 const SESSION_KEY = "SK_PizzaShop";
-//const BASE_URL = "http://mora0199.edumedia.ca";
-const BASE_URL = "http://localhost:3030";
+const BASE_URL = "http://mora0199.edumedia.ca";
+// const BASE_URL = "http://localhost:3030";
 let pages = [];
 let token = "";
 let loggedUser = {};
@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", init);
 
 function init() {
   pages = document.querySelectorAll(".pages");
-  // history.pushState(null, null, document.location);
+  history.pushState(null, null, document.location);
   document.querySelector("#signinlnk").addEventListener("click", function (e) {
     e.preventDefault();
     e.stopPropagation();
@@ -235,7 +235,7 @@ function changePage(e, page) {
     data = "signin";
   }
   let url = data + ".html";
-  // history.replaceState(data, null, url);
+  history.replaceState(data, null, url);
   for (let i = 0; i < pages.length; i++) {
     pages[i].className = "pages hide";
     if (i == page) {

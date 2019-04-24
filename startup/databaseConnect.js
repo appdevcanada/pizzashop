@@ -7,7 +7,7 @@ module.exports = () => {
 
   let credentials = ''
   if (process.env.NODE_ENV === 'production') {
-    credentials = `${dbConfig.username}:${dbConfig.password}@`
+    credentials = `${dbConfig.user}:${dbConfig.password}@`
   }
 
   const connectionString = `mongodb://${credentials}${dbConfig.host}:${dbConfig.port}/${dbConfig.name}?authSource=admin`
