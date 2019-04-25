@@ -7,9 +7,11 @@ const Auth = require('../../models/Auth_attempts')
 var nowUser = ""
 var isStaff = false
 var ipAddress = ""
+const logger = require('../../startup/logger')
 
 // Register a new user
 router.post('/users', sanitizeBody, async (req, res) => {
+  logger('info', req)
   try {
     let newUser = new User(req.sanitizedBody)
     const itExists = !!(await User.countDocuments({ email: newUser.email }))
@@ -42,12 +44,27 @@ router.post('/users', sanitizeBody, async (req, res) => {
 })
 
 router.get('/users/me', authorize, async (req, res) => {
-  const user = await User.findById(req.user._id)
-  nowUser = user._id
-  isStaff = user.isStaff
-  ipAddress = req.ip
-  saveAttempt()
-  res.send({ data: user })
+  try {
+    const user = await User.findById(req.user._id)
+    nowUser = user._id
+    isStaff = user.isStaff
+    ipAddress = req.ip
+    saveAttempt()
+    res.send({ data: user })
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.patch('/users/me', authorize, async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id)
+    user.password = req.body.password
+    await user.save()
+    res.send({ data: user })
+  } catch (err) {
+    next(err)
+  }
 })
 
 router.post('/tokens', sanitizeBody, async (req, res) => {

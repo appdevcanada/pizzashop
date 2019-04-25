@@ -11,6 +11,7 @@ module.exports = () => {
   }
 
   const connectionString = `mongodb://${credentials}${dbConfig.host}:${dbConfig.port}/${dbConfig.name}?authSource=admin`
+
   mongoose
     .connect(connectionString, {
       useNewUrlParser: true
