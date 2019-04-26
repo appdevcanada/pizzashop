@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const sanitizeBody = require('../middleware/sanitizeBody')
-const Ingredient = require('../models/Ingredients')
+const Ingredient = require('../models/Ingredient')
 const authorize = require('../middleware/auth')
 const ResourceNotFoundError = require('../exceptions/ResourceNotFound')
 const staff = require('../middleware/staff')

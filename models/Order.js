@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const Pizza = require('./Pizzas')
+const Pizza = require('./Pizza')
 
 
 const schema = mongoose.Schema({

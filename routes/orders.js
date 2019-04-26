@@ -1,6 +1,6 @@
 const router = require('express').Router()
 const sanitizeBody = require('../middleware/sanitizeBody')
-const Order = require('../models/Orders')
+const Order = require('../models/Order')
 const authorize = require('../middleware/auth')
 const ResourceNotFoundError = require('../exceptions/ResourceNotFound')
 

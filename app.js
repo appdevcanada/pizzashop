@@ -8,9 +8,11 @@ const cors = require('cors')
 const helmet = require('helmet')
 const express = require('express')
 const app = express()
+const config = require('config')
+const corsConfig = config.get('cors')
 
 app.use(sanitizeMongo())
-app.use(cors())
+app.use(cors(corsConfig))
 app.use(helmet())
 app.use(express.json())
 app.use(require('express-mongo-sanitize')())
@@ -18,9 +20,13 @@ app.use(require('express-mongo-sanitize')())
 app.use('/auth', require('./routes/auth'))
 app.use('/api/users', require('./routes/auth'))
 
-app.use('/api/ingredients', require('./routes/ingredient'))
+app.use('/api/ingredients', require('./routes/ingredients'))
 app.use('/api/pizzas', require("./routes/pizzas"))
 app.use('/api/orders', require("./routes/orders"))
+
+
+app.use(require('./middleware/logError'))
+app.use(require('./middleware/errorHandler'))
 
 
 const port = process.env.PORT || 3030

@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const Pizza = require('../models/Pizzas')
+const Pizza = require('../models/Pizza')
 const sanitizeBody = require('../middleware/sanitizeBody')
 const authorize = require('../middleware/auth')
 const ResourceNotFoundError = require('../exceptions/ResourceNotFound')
