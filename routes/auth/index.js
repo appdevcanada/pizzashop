@@ -12,7 +12,7 @@ var nowUser = ""
 var isStaff = false
 var ipAddress = ""
 
-router.options("/", cors(corsConfig))
+router.options("*", cors(corsConfig))
 
 // Register a new user
 router.post('/users', sanitizeBody, async (req, res) => {

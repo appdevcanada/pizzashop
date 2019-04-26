@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Pizza = require('./Pizzas')
 
 
 const schema = mongoose.Schema({
@@ -7,7 +8,11 @@ const schema = mongoose.Schema({
     type: { type: String, trim: true, lowercase: true, enum: ['pickup', 'delivery'], default: 'pickup' },
     status: { type: String, trim: true, lowercase: true, enum: ['draft', 'ordered', 'paid', 'delivered'], default: 'draft' },
     pizzas: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Pizza' }],
-    address: { type: String, trim: true, lowercase: true, required: true },
+    address: {
+        type: String, trim: true, lowercase: true, required: function () {
+            this.type == 'delivery' ? true : false
+        }
+    },
     price: { type: Number, default: 0 },
     deliveryCharge: {
         type: Number,
@@ -29,12 +34,20 @@ const schema = mongoose.Schema({
 
 })
 
-schema.pre("save", function (next) {
-    if (!this.updatedAt) {
-        this.updatedAt = new Date();
+schema.pre('save', async function () {
+    await this.populate('Pizza').execPopulate();
+
+    this.price = this.Pizza.reduce((acc, element) => acc += element.price, 0)
+
+    if (this.type == 'delivery') {
+        this.tax = (this.price + this.deliveryCharge) * 0.13;
+        this.total = this.price + this.tax + this.deliveryCharge;
+    } else {
+        this.tax = (this.price) * 0.13;
+        this.total = this.price + this.tax;
     }
-    next();
-});
+
+})
 
 const Model = mongoose.model('Order', schema)
 

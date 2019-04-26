@@ -21,8 +21,12 @@
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.2.3",
     "mongoose": "^5.5.2",
+    "mongoose-unique-validator": "^2.0.3",
+    "validator": "^10.11.0",
     "winston": "^3.2.1",
-    "xss": "^1.0.6",
+    "xss": "^1.0.6"
+  },
+  "engines": {
     "node": "11.13.0"
   }
 }

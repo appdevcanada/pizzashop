@@ -10,7 +10,7 @@ const express = require('express')
 const app = express()
 
 app.use(sanitizeMongo())
-//app.use(cors())
+app.use(cors())
 app.use(helmet())
 app.use(express.json())
 app.use(require('express-mongo-sanitize')())
@@ -18,8 +18,10 @@ app.use(require('express-mongo-sanitize')())
 app.use('/auth', require('./routes/auth'))
 app.use('/api/users', require('./routes/auth'))
 
-// app.use('/courses', require('./routes/courses'))
-// app.use('/students', require('./routes/students'))
+app.use('/api/ingredients', require('./routes/ingredient'))
+app.use('/api/pizzas', require("./routes/pizzas"))
+app.use('/api/orders', require("./routes/orders"))
+
 
 const port = process.env.PORT || 3030
 app.listen(port, () => debug(`Express is listening on port ${port}...`))
