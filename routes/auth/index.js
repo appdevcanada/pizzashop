@@ -4,14 +4,18 @@ const sanitizeBody = require('../../middleware/sanitizeBody')
 const authorize = require('../../middleware/auth')
 const User = require('../../models/User')
 const Auth = require('../../models/Auth_attempts')
+const cors = require('cors')
+const config = require('config')
+const corsConfig = config.get('cors')
+
 var nowUser = ""
 var isStaff = false
 var ipAddress = ""
-const logger = require('../../startup/logger')
+
+router.options("/", cors(corsConfig))
 
 // Register a new user
 router.post('/users', sanitizeBody, async (req, res) => {
-  logger('info', req)
   try {
     let newUser = new User(req.sanitizedBody)
     const itExists = !!(await User.countDocuments({ email: newUser.email }))
@@ -44,16 +48,12 @@ router.post('/users', sanitizeBody, async (req, res) => {
 })
 
 router.get('/users/me', authorize, async (req, res) => {
-  try {
-    const user = await User.findById(req.user._id)
-    nowUser = user._id
-    isStaff = user.isStaff
-    ipAddress = req.ip
-    saveAttempt()
-    res.send({ data: user })
-  } catch (err) {
-    next(err)
-  }
+  const user = await User.findById(req.user._id)
+  nowUser = user._id
+  isStaff = user.isStaff
+  ipAddress = req.ip
+  saveAttempt()
+  res.send({ data: user })
 })
 
 router.patch('/users/me', authorize, async (req, res) => {

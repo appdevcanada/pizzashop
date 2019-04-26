@@ -19,114 +19,59 @@ const TYPE_INFO = 0;
 const TYPE_SUCC = 1;
 const TYPE_ERR = 2;
 const SESSION_KEY = "SK_PizzaShop";
-const BASE_URL = "http://mora0199.edumedia.ca:80";
-// const BASE_URL = "http://localhost:3030";
+// const BASE_URL = "http://mora0199.edumedia.ca:80";
+const BASE_URL = "http://localhost:3030";
 let pages = [];
 let token = "";
+let initPageIdx = 99;
 let loggedUser = {};
 
+/* INITIAL FUNCTION **************/
 document.addEventListener("DOMContentLoaded", init);
 
 function init() {
   window.historyInitiated = true;
   let initPage = window.location.href;
-  console.log(initPage);
-  window.addEventListener("popstate", (e) => {
-    console.log("refresh");
-    history.replaceState(null, null, initPage);
-  });
+  console.log("Initial page:", initPage);
+
   pages = document.querySelectorAll(".pages");
+  initPageIdx = pages.length - 1;
   history.pushState(null, null, initPage);
   document.querySelector("#signinlnk").addEventListener("click", function (e) {
     e.preventDefault();
     e.stopPropagation();
-    changePage(e, 0);
+    switchPage(e, 0, "");
     document.querySelector("#inputEmailSI").focus();
+  });
+  document.querySelector("#signoutlnk").addEventListener("click", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    signOut();
   });
   document.querySelector("#signuplnk").addEventListener("click", function (e) {
     e.preventDefault();
     e.stopPropagation();
-    changePage(e, 1);
+    switchPage(e, 1, "");
     document.querySelector("#first_name").focus();
   });
   document.querySelector("#closebtn").addEventListener("click", hideOverlay);
   document.querySelector(".modal").addEventListener("transitionend", closeDrawer);
   document.querySelector("#submitSUP").addEventListener("click", signUp);
   document.querySelector("#submitSIN").addEventListener("click", signIn);
+  window.addEventListener("popstate", (e) => {
+    console.log("Refresh pressed");
+    history.replaceState(null, null, initPage);
+  });
+  document.querySelector("#mn-home").href = initPage;
+  switchPage(false, initPageIdx, "index");
+
 }
 
 function closeDrawer() {
   setTimeout(hideOverlay, 5000);
 }
 
-function signIn() {
-  let url = BASE_URL + "/auth/tokens";
-  let formData = {
-    email: document.querySelector("#inputEmailSI").value,
-    password: document.querySelector("#inputPasswordSI").value
-  };
-  let jsonData = JSON.stringify(formData);
-  let headers = new Headers();
-  headers.append('Content-Type', 'application/json;charset=UTF-8');
-  let req = new Request(url, {
-    headers: headers,
-    method: 'POST',
-    mode: 'cors',
-    body: jsonData
-  });
-  fetch(req)
-    .then(response => {
-      return response.json();
-    })
-    .then(result => {
-      token = result.data.token;
-      sessionStorage.setItem(SESSION_KEY, JSON.stringify(token));
-      let url = BASE_URL + "/auth/users/me";
-      let headers = new Headers();
-      headers.append('Content-Type', 'application/json;charset=UTF-8');
-      headers.append('Authorization', 'Bearer ' + token);
-      console.log('header token: ', token);
-      console.log('header auth: ', headers);
-      let req = new Request(url, {
-        headers: headers,
-        method: 'GET',
-        mode: 'cors'
-      });
-      fetch(req)
-        .then(response => {
-          return response.json();
-        })
-        .then(result => {
-          if (!result.errors) {
-            loggedUser = result.data;
-            let code = "Welcome back!",
-              status = loggedUser.firstName,
-              title = "",
-              detail = "";
-            showOverlay(TYPE_SUCC, status, code, title, detail);
-            changePage(false, 2);
-          } else {
-            let code = "Code: " + result.errors[0].code,
-              status = result.errors[0].status,
-              title = result.errors[0].title,
-              detail = result.errors[0].detail;
-            showOverlay(TYPE_ERR, status, code, title, detail);
-          };
-        })
-        .catch(error => {
-          // let code = "Code: " + error.errors[0].code,
-          //   status = error.errors[0].status,
-          //   title = error.errors[0].title,
-          //   detail = error.errors[0].detail;
-          showOverlay(TYPE_ERR, error.status, error.code, error.title, error.detail);
-          // showOverlay(TYPE_ERR, status, code, title, detail);
-        })
-    })
-    .catch(error => {
-      showOverlay(TYPE_ERR, error.status, error.code, error.title, error.detail);
-    });
-}
-
+/* OPERATIONAL FUNCTIONS *************/
 function signUp() {
   let url = BASE_URL + "/auth/users";
   let userType = document.querySelector("#userType")
@@ -167,7 +112,7 @@ function signUp() {
           detail = data.errors[0].detail;
         showOverlay(TYPE_ERR, status, code, title, detail);
       };
-      changePage(false, 0);
+      switchPage(false, 0, "signin");
       document.querySelector("#inputEmailSI").focus();
     })
     .catch(error => {
@@ -175,6 +120,89 @@ function signUp() {
     })
 }
 
+function signIn() {
+  let url = BASE_URL + "/auth/tokens";
+  let formData = {
+    email: document.querySelector("#inputEmailSI").value,
+    password: document.querySelector("#inputPasswordSI").value
+  };
+  let jsonData = JSON.stringify(formData);
+  let headers = new Headers();
+  headers.append('Content-Type', 'application/json;charset=UTF-8');
+  let req = new Request(url, {
+    headers: headers,
+    method: 'POST',
+    mode: 'cors',
+    body: jsonData
+  });
+  fetch(req)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw Error(`Request rejected with status ${response.status}`);
+      }
+    })
+    .then(result => {
+      token = result.data.token;
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify(token));
+      let url = BASE_URL + "/auth/users/me";
+      let headers = new Headers();
+      headers.append('Content-Type', 'application/json;charset=UTF-8');
+      headers.append('Authorization', 'Bearer ' + token);
+      console.log('header token: ', token);
+      let req = new Request(url, {
+        headers: headers,
+        method: 'GET',
+        mode: 'cors'
+      });
+      fetch(req)
+        .then(response => {
+          return response.json();
+        })
+        .then(result => {
+          if (!result.errors) {
+            loggedUser = result.data;
+            let code = "Welcome back!",
+              status = loggedUser.firstName,
+              title = "",
+              detail = "";
+            showOverlay(TYPE_SUCC, status, code, title, detail);
+            updateMenu();
+            switchPage(false, initPageIdx, "index");
+          } else {
+            let code = "Code: " + result.errors[0].code,
+              status = result.errors[0].status,
+              title = result.errors[0].title,
+              detail = result.errors[0].detail;
+            showOverlay(TYPE_ERR, status, code, title, detail);
+          };
+        })
+        .catch(error => {
+          // let code = "Code: " + error.errors[0].code,
+          //   status = error.errors[0].status,
+          //   title = error.errors[0].title,
+          //   detail = error.errors[0].detail;
+          showOverlay(TYPE_ERR, error.status, error.code, error.title, error.detail);
+          // showOverlay(TYPE_ERR, status, code, title, detail);
+        })
+    })
+    .catch(error => {
+      console.log("ERROR: ", error);
+      showOverlay(TYPE_ERR, error.status, error.code, error.title, error.detail);
+    });
+}
+
+function signOut() {
+  sessionStorage.removeItem(SESSION_KEY);
+  sessionStorage.clear();
+  updateMenu();
+  switchPage(false, initPageIdx, "index");
+}
+
+
+
+/* OVERLAY AND MODAL WINDOWS **************/
 function showOverlay(typeMsg, msgStt, msgCode, msgTitle, msgDetail) {
   let overlayMenu = document.querySelector(".overlay-menu");
   overlayMenu.classList.remove("hide");
@@ -235,20 +263,25 @@ function hideModal(e) {
   }
 }
 
-function changePage(e, page) {
+/* SWITCH PAGES ******************/
+function switchPage(e, pageIdx, fakeURL) {
   let data = "";
   if (e) {
     data = e.target.getAttribute('data-name');
   } else {
-    data = "signin";
+    data = fakeURL;
   }
   let url = data + ".html";
-  // history.replaceState(data, null, url);
+  // history.replaceState(null, null, url);
   for (let i = 0; i < pages.length; i++) {
     pages[i].className = "pages hide";
-    if (i == page) {
+    if (i == pageIdx) {
       pages[i].classList.remove("hide");
     }
   }
 
+}
+
+function updateMenu() {
+  document.querySelector(".submenu").classList.toggle("hide");
 }

@@ -10,7 +10,7 @@ const express = require('express')
 const app = express()
 
 app.use(sanitizeMongo())
-app.use(cors())
+//app.use(cors())
 app.use(helmet())
 app.use(express.json())
 app.use(require('express-mongo-sanitize')())

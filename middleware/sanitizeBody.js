@@ -1,10 +1,7 @@
 const debug = require('debug')('final-mora0199-call0099:db')
 const xss = require('xss')
-const logger = require('../startup/logger')
 
 const sanitize = sourceString => {
-  logger('info', sourceString)
-
   return xss(sourceString, {
     whiteList: [],
     stripIgnoreTag: true,
