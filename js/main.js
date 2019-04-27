@@ -19,7 +19,7 @@ const TYPE_INFO = 0;
 const TYPE_SUCC = 1;
 const TYPE_ERR = 2;
 const SESSION_KEY = "SK_PizzaShop";
-// const BASE_URL = "http://mora0199.edumedia.ca:80";
+// const BASE_URL = "http://mora0199.edumedia.ca";
 const BASE_URL = "http://localhost:3030";
 let pages = [];
 let token = "";
@@ -93,7 +93,6 @@ function signUp() {
     mode: 'cors',
     body: jsonData
   });
-  console.log(url);
   fetch(req)
     .then(response => {
       return response.json();
@@ -150,7 +149,6 @@ function signIn() {
       let headers = new Headers();
       headers.append('Content-Type', 'application/json;charset=UTF-8');
       headers.append('Authorization', 'Bearer ' + token);
-      console.log('header token: ', token);
       let req = new Request(url, {
         headers: headers,
         method: 'GET',
@@ -179,12 +177,8 @@ function signIn() {
           };
         })
         .catch(error => {
-          // let code = "Code: " + error.errors[0].code,
-          //   status = error.errors[0].status,
-          //   title = error.errors[0].title,
-          //   detail = error.errors[0].detail;
+          console.log("ERROR: ", error);
           showOverlay(TYPE_ERR, error.status, error.code, error.title, error.detail);
-          // showOverlay(TYPE_ERR, status, code, title, detail);
         })
     })
     .catch(error => {
@@ -200,7 +194,9 @@ function signOut() {
   switchPage(false, initPageIdx, "index");
 }
 
-
+function changePW() {
+  switchPage(false, 2, "profile");
+}
 
 /* OVERLAY AND MODAL WINDOWS **************/
 function showOverlay(typeMsg, msgStt, msgCode, msgTitle, msgDetail) {
@@ -284,4 +280,7 @@ function switchPage(e, pageIdx, fakeURL) {
 
 function updateMenu() {
   document.querySelector(".submenu").classList.toggle("hide");
+  document.querySelector("#mn-admin").classList.toggle("hide");
+  document.querySelector("#mn-admin-si").classList.toggle("hide");
+  document.querySelector("#mn-chgpwd").addEventListener('click', changePW);
 }

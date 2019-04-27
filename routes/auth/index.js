@@ -7,6 +7,7 @@ const Auth = require('../../models/Auth_attempts')
 const cors = require('cors')
 const config = require('config')
 const corsConfig = config.get('cors')
+const logger = require('../../startup/logger')
 
 var nowUser = ""
 var isStaff = false

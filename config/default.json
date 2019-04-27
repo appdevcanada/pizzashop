@@ -9,8 +9,9 @@
     "saltRounds": 14
   },
   "cors": {
-    "origin": "*",
-    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+    "allowed_origins": "*",
+    "allowed_methods": "GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS",
+    "preflightContinue": false,
     "optionsSuccessStatus": 204
   }
 }

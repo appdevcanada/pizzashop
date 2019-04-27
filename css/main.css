@@ -25,7 +25,7 @@ body {
 }
 .pages {
   display: block;
-  margin-top: 110px;
+  margin-top: 140px;
   z-index: 50;
 }
 
@@ -37,7 +37,7 @@ body {
   position: fixed;
   top: 0;
   width: 100%;
-  height: 100px;
+  height: 130px;
   z-index: 100;
   background-color: rgb(50, 50, 50);
   box-shadow: 0 4px 4px rgba(0,0,0,.14),0 4px 8px rgba(0,0,0,.28);
@@ -48,13 +48,17 @@ body {
 
 .logo {
   grid-area: lg;
-  height: 100px;
-  padding-left: 30px;
+  height: 130px;
+  padding-left: 10px;
 }
 
 #menu {
   grid-area: mn;
   margin-right: 20px;
+}
+
+.nav-link {
+    padding: 14px 16px;
 }
 
 #sign {
@@ -72,7 +76,7 @@ ul {
   width: 100%;
   position: -webkit-sticky; /* Safari */
   position: sticky;
-  height: 100px;
+  height: 130px;
   clear: both;
   display: -webkit-box;
   display: -moz-box;
@@ -124,8 +128,16 @@ li a:hover {
 }
 
 .header > h6 {
-  margin: 40px 5px 0;
+  margin: 54px 5px 0;
   color: rgb(255, 255, 255);
+}
+
+.dropdown-menu {
+  bottom: 10px !important;
+}
+
+.dropdown-item {
+    padding: 2px 1rem !important;
 }
 
 .header > h6 > a {

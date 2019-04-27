@@ -31,9 +31,18 @@
     <nav id="menu" class="menu">
       <ul>
         <li><a href="#" class="" id="mn-home">Home</a></li>
-        <li><a href="#" class="" id="mn-admin">Admin</a></li>
         <li><a href="#" class="" id="mn-ctt">Contact</a></li>
         <li><a href="#" class="" id="mn-about">About</a></li>
+        <li><a href="#" class="nav-link disabled" tabindex="-1" aria-disabled="true" id="mn-admin">Admin</a></li>
+        <li class="nav-item dropdown hide" id="mn-admin-si">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Admin
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item" id="mn-chgpwd" href="#">Change Password</a>
+          </div>
+        </li>
       </ul>
     </nav>
     <h6 class="submenu text-center" id="sub-menu-si">
@@ -150,6 +159,7 @@
     </div>
   </div>
   <div class="pages hide" id="chgpwd">
+    <h2>ADM Change Password</h2>
   </div>
   <div class="pages hide" id="adm-lstpizza">
     <h2>ADM List Pizza</h2>
