@@ -180,13 +180,22 @@ function signIn(e) {
           };
         })
         .catch(error => {
-          console.log("ERROR: ", error);
-          showOverlay(TYPE_ERR, error.status, error.code, error.title, error.detail);
+          console.log("ERROR User: ", error);
+          if (error.code) {
+            showOverlay(TYPE_ERR, error.status, error.code, error.title, error.detail);
+          } else {
+            showOverlay(TYPE_ERR, error, '', '', '');
+          }
         })
     })
     .catch(error => {
-      console.log("ERROR: ", error);
-      showOverlay(TYPE_ERR, error.status, error.code, error.title, error.detail);
+      console.log("ERROR Token: ", error);
+      if (error.code) {
+        console.log(error.code);
+        showOverlay(TYPE_ERR, error.status, error.code, error.title, error.detail);
+      } else {
+        showOverlay(TYPE_ERR, error, '', '', '');
+      }
     });
 }
 
