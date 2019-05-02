@@ -20,7 +20,8 @@ const TYPE_SUCC = 1;
 const TYPE_ERR = 2;
 const SESSION_KEY = "SK_PizzaShop";
 // const BASE_URL = "http://mora0199.edumedia.ca";
-const BASE_URL = "http://localhost:3030";
+// const BASE_URL = "http://localhost:3030";
+const BASE_URL = "https://mora0199.github.io/pizzashop";
 let pages = [];
 let token = "";
 let initPageIdx = 99;
@@ -72,7 +73,8 @@ function closeDrawer() {
 }
 
 /* OPERATIONAL FUNCTIONS *************/
-function signUp() {
+function signUp(e) {
+  e.preventDefault();
   let url = BASE_URL + "/auth/users";
   let userType = document.querySelector("#userType")
   let selUser = userType.options[userType.selectedIndex].value;
@@ -119,7 +121,8 @@ function signUp() {
     })
 }
 
-function signIn() {
+function signIn(e) {
+  e.preventDefault();
   let url = BASE_URL + "/auth/tokens";
   let formData = {
     email: document.querySelector("#inputEmailSI").value,
