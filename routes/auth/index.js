@@ -19,6 +19,7 @@ router.options("*", cors(corsConfig))
 router.post('/users', sanitizeBody, async (req, res) => {
   try {
     let newUser = new User(req.sanitizedBody)
+    logger.log('info', req.sanitizedBody)
     const itExists = !!(await User.countDocuments({ email: newUser.email }))
     if (itExists) {
       return res.status(400).send({

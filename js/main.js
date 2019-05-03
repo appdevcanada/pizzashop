@@ -19,8 +19,8 @@ const TYPE_INFO = 0;
 const TYPE_SUCC = 1;
 const TYPE_ERR = 2;
 const SESSION_KEY = "SK_PizzaShop";
-// const BASE_URL = "http://mora0199.edumedia.ca";
-const BASE_URL = "http://localhost:3030";
+const BASE_URL = "http://mora0199.edumedia.ca";
+// const BASE_URL = "http://localhost:3030";
 // const BASE_URL = "https://mora0199.github.io/pizzashop";
 let pages = [];
 let token = "";
@@ -79,6 +79,7 @@ function signUp(e) {
   let userType = document.querySelector("#userType")
   let selUser = userType.options[userType.selectedIndex].value;
   let staffYN = selUser === "S" ? true : false;
+  console.log(staffYN);
   let formData = {
     firstName: document.querySelector("#first_name").value,
     lastName: document.querySelector("#last_name").value,
@@ -106,6 +107,8 @@ function signUp(e) {
           title = "",
           detail = "Thanks for registering with us!";
         showOverlay(TYPE_SUCC, status, code, title, detail);
+        switchPage(false, 0, "signin");
+        document.querySelector("#inputEmailSI").focus();
       } else {
         let code = "Code: " + data.errors[0].code,
           status = data.errors[0].status,
@@ -113,11 +116,13 @@ function signUp(e) {
           detail = data.errors[0].detail;
         showOverlay(TYPE_ERR, status, code, title, detail);
       };
-      switchPage(false, 0, "signin");
-      document.querySelector("#inputEmailSI").focus();
     })
     .catch(error => {
-      showOverlay(TYPE_ERR, error.status, error.code, error.title, error.detail);
+      if (error.code) {
+        showOverlay(TYPE_ERR, error.status, error.code, error.title, error.detail);
+      } else {
+        showOverlay(TYPE_ERR, error, '', '', '');
+      }
     })
 }
 
