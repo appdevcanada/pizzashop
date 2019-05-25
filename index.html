@@ -31,13 +31,14 @@
     <img class="logo" id="logo" src="img/logo.png" />
     <nav id="menu" class="menu">
       <ul>
-        <li><a href="#" class="" id="mn-home">Home</a></li>
-        <li><a href="#" class="" id="mn-ctt">Contact</a></li>
-        <li><a href="#" class="" id="mn-about">About</a></li>
-        <li><a href="#" class="nav-link disabled" tabindex="-1" aria-disabled="true" id="mn-admin">Admin</a></li>
+        <li><a href="" class="active" id="mn-home" data-name="index">Home</a></li>
+        <li><a href="" class="" id="mn-ctt" data-name="contact">Contact</a></li>
+        <li><a href="" class="" id="mn-about" data-name="about">About</a></li>
+        <li id="admin-hide" class=""><a href="#" class="nav-link disabled" tabindex="-1" aria-disabled="true"
+            id="mn-admin">Admin</a></li>
         <li class="nav-item dropdown hide" id="mn-admin-si">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false" data-name="admin">
             Admin
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -173,6 +174,12 @@
   </div>
   <div class="pages hide" id="adm-addingr">
     <h2>ADM Add Ingredients</h2>
+  </div>
+  <div class="pages hide" id="contact">
+    <h2>Contact page</h2>
+  </div>
+  <div class="pages hide" id="about">
+    <h2>About page</h2>
   </div>
   <div class="pages hide" id="startup">
     <h2>Startup Screen</h2>

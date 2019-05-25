@@ -7,6 +7,7 @@ const uniqueValidator = require('mongoose-unique-validator')
 const validator = require('validator');
 const saltRounds = dbConfig.saltRounds
 const jwtPrivateKey = process.env.APP_JWTKEY
+//const logger = require('../startup/logger')
 
 const schema = new mongoose.Schema({
     firstName: { type: String, trim: true, maxlength: 64, required: true },

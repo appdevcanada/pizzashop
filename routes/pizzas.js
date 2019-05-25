@@ -12,10 +12,10 @@ router.get('/', async (req, res) => {
     data: pizza
   })
 })
+
 router.post('/', sanitizeBody, authorize, staff, async (req, res, next) => {
 
   try {
-
     let newPizza = new Pizza(req.sanitizedBody)
     await newPizza.save()
 
@@ -31,7 +31,7 @@ router.get('/:id', async (req, res, next) => {
   try {
     const pizza = await Pizza.findById(req.params.id)
     if (!pizza) throw new ResourceNotFoundError(
-      `We could not find a car with id: ${req.params.id}`
+      `We could not find a pizza with id: ${req.params.id}`
     )
     res.send({
       data: pizza
@@ -40,9 +40,9 @@ router.get('/:id', async (req, res, next) => {
     next(err)
   }
 })
+
 router.patch('/:id', sanitizeBody, authorize, staff, async (req, res, next) => {
   try {
-
     const {
       _id,
       ...otherAttributes
@@ -66,15 +66,10 @@ router.patch('/:id', sanitizeBody, authorize, staff, async (req, res, next) => {
   } catch (err) {
     next(err)
   }
-
-
-
-
 })
 
 router.put('/:id', sanitizeBody, authorize, staff, async (req, res, next) => {
   try {
-
     const {
       _id,
       ...otherAttributes
@@ -90,7 +85,7 @@ router.put('/:id', sanitizeBody, authorize, staff, async (req, res, next) => {
       }
     )
     if (!pizza) throw new ResourceNotFoundError(
-      `We could not find a car with id: ${req.params.id}`
+      `We could not find a pizza with id: ${req.params.id}`
     )
     res.send({
       data: pizza
@@ -99,12 +94,12 @@ router.put('/:id', sanitizeBody, authorize, staff, async (req, res, next) => {
     next(err)
   }
 })
+
 router.delete('/:id', authorize, staff, async (req, res, next) => {
   try {
-
     const pizza = await Pizza.findByIdAndRemove(req.params.id)
     if (!pizza) throw new ResourceNotFoundError(
-      `We could not find a car with id: ${req.params.id}`
+      `We could not find a pizza with id: ${req.params.id}`
     )
     res.send({
       data: pizza

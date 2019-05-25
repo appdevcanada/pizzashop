@@ -3,7 +3,6 @@ const mongoose = require('mongoose')
 
 const schema = mongoose.Schema({
 
-
     name: { type: String, trim: true, minlength: 4, maxlength: 64, required: true },
     price: { type: Number, min: 1000, max: 10000 },
     size: { type: String, trim: true, lowercase: true, enum: ['small', 'medium', 'large', 'extra large'], default: 'small' },
@@ -11,7 +10,6 @@ const schema = mongoose.Schema({
     imageUrl: { type: String, trim: true, maxlength: 64 },
     ingredients: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Ingredient' }],
     extraToppings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Ingredient' }]
-
 
 })
 

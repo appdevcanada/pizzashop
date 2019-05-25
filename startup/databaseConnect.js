@@ -17,10 +17,10 @@ module.exports = () => {
       useNewUrlParser: true
     })
     .then(() => {
-      logger.log('info', `Connected to MongoDB ...`)
+      logger.log('info', `Connected to MongoDB at ${dbConfig.host}...`)
     })
     .catch(err => {
-      logger.log('error', `Error connecting to MongoDB ...`, err)
+      logger.log('error', `Error connecting to MongoDB at ${dbConfig.host}...`, err)
       process.exit(1)
     })
 }

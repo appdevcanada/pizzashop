@@ -15,8 +15,6 @@ router.get('/', async (req, res) => {
 
 router.post('/', sanitizeBody, authorize, staff, async (req, res, next) => {
   try {
-
-
     let newIngredient = new Ingredient(req.sanitizedBody)
     await newIngredient.save()
     res.status(201).send({
@@ -45,7 +43,6 @@ router.get('/:id', async (req, res, next) => {
 
 router.patch('/:id', sanitizeBody, authorize, staff, async (req, res, next) => {
   try {
-
     const {
       _id,
       ...otherAttributes
@@ -59,23 +56,20 @@ router.patch('/:id', sanitizeBody, authorize, staff, async (req, res, next) => {
         runValidators: true
       }
     )
-    if (!ingredient) throw new Error('Resource not found')
+    if (!ingredient) throw new Error(
+      `We could not find an ingredient with id: ${req.params.id}`
+    )
     res.send({
       data: ingredient
     })
   } catch (err) {
     next(req, res)
   }
-
-
-
-
 })
 
 router.put('/:id', sanitizeBody, authorize, staff, async (req, res, next) => {
 
   try {
-
     const {
       _id,
       ...otherAttributes
@@ -91,7 +85,7 @@ router.put('/:id', sanitizeBody, authorize, staff, async (req, res, next) => {
       }
     )
     if (!ingredient) throw new ResourceNotFoundError(
-      `We could not find a car with id: ${req.params.id}`
+      `We could not find an ingredient with id: ${req.params.id}`
     )
     res.send({
       data: ingredient
@@ -102,10 +96,9 @@ router.put('/:id', sanitizeBody, authorize, staff, async (req, res, next) => {
 })
 router.delete('/:id', authorize, staff, async (req, res, next) => {
   try {
-
     const ingredient = await Ingredient.findByIdAndRemove(req.params.id)
     if (!ingredient) throw new ResourceNotFoundError(
-      `We could not find a car with id: ${req.params.id}`
+      `We could not find an ingredient with id: ${req.params.id}`
     )
     res.send({
       data: ingredient

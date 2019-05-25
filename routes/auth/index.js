@@ -7,7 +7,7 @@ const Auth = require('../../models/Auth_attempts')
 const cors = require('cors')
 const config = require('config')
 const corsConfig = config.get('cors')
-const logger = require('../../startup/logger')
+// const logger = require('../../startup/logger')
 
 var nowUser = ""
 var isStaff = false
@@ -19,7 +19,6 @@ router.options("*", cors(corsConfig))
 router.post('/users', sanitizeBody, async (req, res) => {
   try {
     let newUser = new User(req.sanitizedBody)
-    logger.log('info', req.sanitizedBody)
     const itExists = !!(await User.countDocuments({ email: newUser.email }))
     if (itExists) {
       return res.status(400).send({
@@ -79,7 +78,8 @@ router.post('/tokens', sanitizeBody, async (req, res) => {
         {
           status: 'Unauthorized',
           code: '401',
-          title: 'Incorrect username or password.'
+          title: 'Incorrect username or password.',
+          detail: 'We could not get a token for this login'
         }
       ]
     })
@@ -127,7 +127,7 @@ function sendResourceNotFound(req, res) {
         status: 'Not Found',
         code: '404',
         title: 'Resource does not exist',
-        description: `We could not find an user with ID: ${req.params._id}`
+        detail: `We could not find an user with ID: ${req.params._id}`
       }
     ]
   })
@@ -140,7 +140,9 @@ router.patch('/:_id', sanitizeBody, update((overwrite = false)))
 async function saveAttempt() {
   let dateNow = convertUTCDateToLocalDate(new Date())
   let newAuth = new Auth({
-    "username": nowUser, "ipAddress": ipAddress, createdAt: dateNow
+    "username": nowUser,
+    "ipAddress": ipAddress,
+    createdAt: dateNow
   })
   try {
     await newAuth.save()

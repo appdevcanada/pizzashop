@@ -18,10 +18,9 @@ const MDL = [
 const TYPE_INFO = 0;
 const TYPE_SUCC = 1;
 const TYPE_ERR = 2;
-const SESSION_KEY = "SK_PizzaShop";
-// const BASE_URL = "https://mora0199.edumedia.ca";
-const BASE_URL = "http://localhost:3030";
-// const BASE_URL = "https://mora0199.github.io/pizzashop";
+const SESSION_KEY = "SK_PizzaShopApp";
+const BASE_URL = "https://mora0199.edumedia.ca/pizzashop";
+// const BASE_URL = "http://localhost:3030";
 let pages = [];
 let token = "";
 let initPageIdx = 99;
@@ -38,32 +37,76 @@ function init() {
   pages = document.querySelectorAll(".pages");
   initPageIdx = pages.length - 1;
   history.pushState(null, null, initPage);
-  document.querySelector("#signinlnk").addEventListener("click", function (e) {
+  document.querySelector("#signinlnk").addEventListener("click", (e) => {
     e.preventDefault();
     e.stopPropagation();
+    document.querySelector("#mn-ctt").className = "";
+    document.querySelector("#mn-home").className = "";
+    document.querySelector("#mn-about").className = "";
     switchPage(e, 0, "");
     document.querySelector("#inputEmailSI").focus();
   });
-  document.querySelector("#signoutlnk").addEventListener("click", function (e) {
+  document.querySelector("#signoutlnk").addEventListener("click", (e) => {
     e.preventDefault();
     e.stopPropagation();
+    document.querySelector("#mn-ctt").className = "";
+    document.querySelector("#mn-home").className = "";
+    document.querySelector("#mn-about").className = "";
+    document.querySelector("#navbarDropdownMenuLink").classList.remove("active");
     signOut();
   });
-  document.querySelector("#signuplnk").addEventListener("click", function (e) {
+  document.querySelector("#signuplnk").addEventListener("click", (e) => {
     e.preventDefault();
     e.stopPropagation();
+    document.querySelector("#mn-ctt").className = "";
+    document.querySelector("#mn-home").className = "";
+    document.querySelector("#mn-about").className = "";
     switchPage(e, 1, "");
     document.querySelector("#first_name").focus();
   });
   document.querySelector("#closebtn").addEventListener("click", hideOverlay);
   document.querySelector(".modal").addEventListener("transitionend", closeDrawer);
+
+  document.querySelector("#mn-ctt").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    document.querySelector("#mn-home").className = "";
+    document.querySelector("#mn-about").className = "";
+    document.querySelector("#navbarDropdownMenuLink").classList.remove("active");
+    document.querySelector("#mn-ctt").className = "active";
+    switchPage(e, 7, "contact");
+  });
+  document.querySelector("#mn-home").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    document.querySelector("#mn-ctt").className = "";
+    document.querySelector("#mn-about").className = "";
+    document.querySelector("#navbarDropdownMenuLink").classList.remove("active");
+    document.querySelector("#mn-home").className = "active";
+    switchPage(e, initPageIdx, "index");
+  });
+  document.querySelector("#mn-about").addEventListener("click", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    document.querySelector("#mn-ctt").className = "";
+    document.querySelector("#mn-home").className = "";
+    document.querySelector("#navbarDropdownMenuLink").classList.remove("active");
+    document.querySelector("#mn-about").className = "active";
+    switchPage(e, 8, "about");
+  });
+  document.querySelector("#navbarDropdownMenuLink").addEventListener("click", (e) => {
+    document.querySelector("#mn-ctt").className = "";
+    document.querySelector("#mn-home").className = "";
+    document.querySelector("#mn-about").className = "";
+    document.querySelector("#navbarDropdownMenuLink").classList.toggle("active");
+  });
+
   document.querySelector("#submitSUP").addEventListener("click", signUp);
   document.querySelector("#submitSIN").addEventListener("click", signIn);
   window.addEventListener("popstate", (e) => {
     console.log("Refresh pressed");
     history.replaceState(null, null, initPage);
   });
-  document.querySelector("#mn-home").href = initPage;
   switchPage(false, initPageIdx, "index");
 
 }
@@ -79,7 +122,6 @@ function signUp(e) {
   let userType = document.querySelector("#userType")
   let selUser = userType.options[userType.selectedIndex].value;
   let staffYN = selUser === "S" ? true : false;
-  console.log(staffYN);
   let formData = {
     firstName: document.querySelector("#first_name").value,
     lastName: document.querySelector("#last_name").value,
@@ -118,11 +160,8 @@ function signUp(e) {
       };
     })
     .catch(error => {
-      if (error.code) {
-        showOverlay(TYPE_ERR, error.status, error.code, error.title, error.detail);
-      } else {
-        showOverlay(TYPE_ERR, error, '', '', '');
-      }
+      console.log("ERROR SignUp: ", error);
+      showOverlay(TYPE_ERR, '', error, '', '');
     })
 }
 
@@ -144,74 +183,79 @@ function signIn(e) {
   });
   fetch(req)
     .then(response => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw Error(`Request rejected with status ${response.status}`);
-      }
+      return response.json();
     })
     .then(result => {
-      token = result.data.token;
-      sessionStorage.setItem(SESSION_KEY, JSON.stringify(token));
-      let url = BASE_URL + "/auth/users/me";
-      let headers = new Headers();
-      headers.append('Content-Type', 'application/json;charset=UTF-8');
-      headers.append('Authorization', 'Bearer ' + token);
-      let req = new Request(url, {
-        headers: headers,
-        method: 'GET',
-        mode: 'cors'
-      });
-      fetch(req)
-        .then(response => {
-          return response.json();
-        })
-        .then(result => {
-          if (!result.errors) {
-            loggedUser = result.data;
-            let code = "Welcome back!",
-              status = loggedUser.firstName,
-              title = "",
-              detail = "";
-            showOverlay(TYPE_SUCC, status, code, title, detail);
-            updateMenu();
-            switchPage(false, initPageIdx, "index");
-          } else {
-            let code = "Code: " + result.errors[0].code,
-              status = result.errors[0].status,
-              title = result.errors[0].title,
-              detail = result.errors[0].detail;
-            showOverlay(TYPE_ERR, status, code, title, detail);
-          };
-        })
-        .catch(error => {
-          console.log("ERROR User: ", error);
-          if (error.code) {
-            showOverlay(TYPE_ERR, error.status, error.code, error.title, error.detail);
-          } else {
-            showOverlay(TYPE_ERR, error, '', '', '');
-          }
-        })
+      if (!result.errors) {
+        token = result.data.token;
+        sessionStorage.setItem(SESSION_KEY, JSON.stringify(token));
+        let url = BASE_URL + "/auth/users/me";
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json;charset=UTF-8');
+        headers.append('Authorization', 'Bearer ' + token);
+        let req = new Request(url, {
+          headers: headers,
+          method: 'GET',
+          mode: 'cors'
+        });
+        fetch(req)
+          .then(response => {
+            return response.json();
+          })
+          .then(result => {
+            if (!result.errors) {
+              loggedUser = result.data;
+              let code = loggedUser.firstName,
+                status = " ",
+                title = "Welcome back!",
+                detail = "";
+              showOverlay(TYPE_SUCC, status, code, title, detail);
+              updateMenu();
+              document.querySelector("#mn-home").className = "active";
+              switchPage(false, initPageIdx, "index");
+            } else {
+              console.log(result.errors[0]);
+              let code = "Code: " + result.errors[0].code,
+                status = result.errors[0].status,
+                title = result.errors[0].title,
+                detail = result.errors[0].detail;
+              showOverlay(TYPE_ERR, status, code, title, detail);
+            };
+          })
+          .catch(error => {
+            console.log("ERROR User: ", error);
+            showOverlay(TYPE_ERR, '', error, '', '');
+          })
+      } else {
+        console.log(result.errors[0]);
+        let code = "Code: " + result.errors[0].code,
+          status = result.errors[0].status,
+          title = result.errors[0].title,
+          detail = result.errors[0].detail;
+        showOverlay(TYPE_ERR, status, code, title, detail);
+      }
     })
     .catch(error => {
       console.log("ERROR Token: ", error);
-      if (error.code) {
-        console.log(error.code);
-        showOverlay(TYPE_ERR, error.status, error.code, error.title, error.detail);
-      } else {
-        showOverlay(TYPE_ERR, error, '', '', '');
-      }
+      showOverlay(TYPE_ERR, '', error, '', '');
     });
 }
 
 function signOut() {
   sessionStorage.removeItem(SESSION_KEY);
   sessionStorage.clear();
+  let code = "Thanks",
+    status = " ",
+    title = loggedUser.firstName,
+    detail = "Hope to see you back soon...";
+  showOverlay(TYPE_SUCC, status, code, title, detail);
   updateMenu();
+  document.querySelector("#mn-home").className = "active";
   switchPage(false, initPageIdx, "index");
 }
 
-function changePW() {
+function changePW(e) {
+  e.preventDefault();
   switchPage(false, 2, "profile");
 }
 
@@ -231,7 +275,7 @@ function showModal(typemsg, msgstatus, msgcode, msgtitle, msgdetail) {
   let info = document.querySelector("#infotype");
   let idtype = document.querySelector("#idtype");
   idtype.textContent = typemsg.title;
-  info.classList.add(typemsg.class);
+  info.className = typemsg.class;
   let msgstt = document.querySelector("#msgStt");
   msgstt.textContent = msgstatus;
   let msgcod = document.querySelector("#msgCod");
@@ -278,26 +322,27 @@ function hideModal(e) {
 
 /* SWITCH PAGES ******************/
 function switchPage(e, pageIdx, fakeURL) {
-  let data = "";
+  let page = "";
   if (e) {
-    data = e.target.getAttribute('data-name');
+    page = e.target.getAttribute('data-name');
   } else {
-    data = fakeURL;
+    page = fakeURL;
   }
-  let url = data + ".html";
-  // history.replaceState(null, null, url);
+  let url = page + ".html";
+  history.replaceState(null, null, url);
+  console.log(url);
   for (let i = 0; i < pages.length; i++) {
     pages[i].className = "pages hide";
     if (i == pageIdx) {
       pages[i].classList.remove("hide");
     }
   }
-
 }
 
 function updateMenu() {
-  document.querySelector(".submenu").classList.toggle("hide");
-  document.querySelector("#mn-admin").classList.toggle("hide");
+  document.querySelectorAll(".submenu")[0].classList.toggle("hide");
+  document.querySelectorAll(".submenu")[1].classList.toggle("hide");
+  document.querySelector("#admin-hide").classList.toggle("hide");
   document.querySelector("#mn-admin-si").classList.toggle("hide");
   document.querySelector("#mn-chgpwd").addEventListener('click', changePW);
 }

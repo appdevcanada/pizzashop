@@ -8,7 +8,7 @@ module.exports = async function (req, res, next) {
                 status: "Unauthorized",
                 code: "403",
                 title: "Forbidden",
-                description: "Missing admin status"
+                detail: "Missing admin status"
             }]
         });
     }

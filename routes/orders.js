@@ -14,7 +14,6 @@ router.get('/', authorize, async (req, res) => {
 router.post('/', sanitizeBody, authorize, async (req, res, next) => {
 
     try {
-
         let newOrder = new Order(req.sanitizedBody)
         await newOrder.save()
 
@@ -42,7 +41,6 @@ router.get('/:id', authorize, async (req, res, next) => {
 
 router.patch('/:id', sanitizeBody, authorize, async (req, res, next) => {
     try {
-
         const {
             _id,
             ...otherAttributes
@@ -56,23 +54,20 @@ router.patch('/:id', sanitizeBody, authorize, async (req, res, next) => {
                 runValidators: true
             }
         )
-        if (!order) throw new Error('Resource not found')
+        if (!order) throw new Error(
+            `We could not find an order with id: ${req.params.id}`
+        )
         res.send({
             data: order
         })
     } catch (err) {
         next(req, res)
     }
-
-
-
-
 })
 
 router.put('/:id', sanitizeBody, authorize, async (req, res, next) => {
 
     try {
-
         const {
             _id,
             ...otherAttributes
@@ -88,7 +83,7 @@ router.put('/:id', sanitizeBody, authorize, async (req, res, next) => {
             }
         )
         if (!order) throw new ResourceNotFoundError(
-            `We could not find a car with id: ${req.params.id}`
+            `We could not find an order with id: ${req.params.id}`
         )
         res.send({
             data: order
@@ -97,12 +92,12 @@ router.put('/:id', sanitizeBody, authorize, async (req, res, next) => {
         next(err)
     }
 })
+
 router.delete('/:id', authorize, async (req, res, next) => {
     try {
-
         const order = await Order.findByIdAndRemove(req.params.id)
         if (!order) throw new ResourceNotFoundError(
-            `We could not find a car with id: ${req.params.id}`
+            `We could not find an order with id: ${req.params.id}`
         )
         res.send({
             data: order
