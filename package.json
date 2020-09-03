@@ -8,7 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "Liam Callahan <call0099@algonquinlive.com> and Luis Souza <mora0199@algonquinlive.com>",
+  "author": "Luis Souza <mora0199@algonquinlive.com>",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
