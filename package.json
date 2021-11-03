@@ -22,7 +22,7 @@
     "mongodb": "^3.2.5",
     "mongoose": "^5.5.9",
     "mongoose-unique-validator": "^2.0.3",
-    "validator": "^10.11.0",
+    "validator": "^13.7.0",
     "winston": "^3.2.1",
     "xss": "^1.0.6"
   },
